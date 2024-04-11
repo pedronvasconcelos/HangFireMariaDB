@@ -38,6 +38,7 @@ builder.Services.AddHangfireServer(options => options.WorkerCount = 1);
 
 builder.Services.AddScoped<INumberService, NumberService>();    
 
+builder.Services.AddScoped<INumberService2, NumberService2>();  
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -48,9 +49,25 @@ var app = builder.Build();
 using var serviceScope = app.Services.CreateScope();
 var recurringJobManager = serviceScope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
 var numberService = serviceScope.ServiceProvider.GetRequiredService<INumberService>();
+var numberService2 = serviceScope.ServiceProvider.GetRequiredService<INumberService2>();
+var recurringJobsOptions = new RecurringJobOptions
+{
+    QueueName = "default",
+    TimeZone = TimeZoneInfo.Utc
+};      
 
-// Agendar o método GenerateRandomNumberDrawn para executar a cada minuto
-recurringJobManager.AddOrUpdate("GenerateRandomNumberDrawn", Job.FromExpression(() => numberService.GenerateRandomNumberDrawn()), Cron.Minutely());
+recurringJobManager.AddOrUpdate("GenerateRandomNumberDrawn", Job.FromExpression(() => numberService.GenerateRandomNumberDrawn()), Cron.Minutely(), recurringJobsOptions);           
+ recurringJobManager.AddOrUpdate("GenerateRandomNumberDrawn2", Job.FromExpression(() => numberService2.GenerateRandomNumberDrawn()), Cron.Minutely(), recurringJobsOptions);
+ recurringJobManager.AddOrUpdate("GenerateRandomNumberDrawn3", Job.FromExpression(() => numberService.GenerateRandomNumberDrawn()), Cron.Minutely(), recurringJobsOptions);
+recurringJobManager.AddOrUpdate("GenerateRandomNumberDrawn4", Job.FromExpression(() => numberService.GenerateRandomNumberDrawn()), Cron.Minutely(), recurringJobsOptions);
+recurringJobManager.AddOrUpdate("GenerateRandomNumberDrawn5", Job.FromExpression(() => numberService.GenerateRandomNumberDrawn()), Cron.Minutely(), recurringJobsOptions);
+recurringJobManager.AddOrUpdate("GenerateRandomNumberDrawn6", Job.FromExpression(() => numberService.GenerateRandomNumberDrawn()), Cron.Minutely(), recurringJobsOptions);
+recurringJobManager.AddOrUpdate("GenerateRandomNumberDrawn7", Job.FromExpression(() => numberService.GenerateRandomNumberDrawn()), Cron.Minutely(), recurringJobsOptions);
+recurringJobManager.AddOrUpdate("GenerateRandomNumberDrawn8", Job.FromExpression(() => numberService.GenerateRandomNumberDrawn()), Cron.Minutely(), recurringJobsOptions);
+recurringJobManager.AddOrUpdate("GenerateRandomNumberDrawn9", Job.FromExpression(() => numberService.GenerateRandomNumberDrawn()), Cron.Minutely(), recurringJobsOptions);
+
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

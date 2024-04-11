@@ -11,5 +11,7 @@ namespace HangFirePOC.Models
 
         public Guid Id { get; set; }
         public long Number { get; set; }
+
+        public DateTime Date { get;  set; }
     }
 }
